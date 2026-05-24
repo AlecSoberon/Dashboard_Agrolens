@@ -1,346 +1,395 @@
 const alerts = [
   {
-    id: 'a1',
-    title: 'Bajo vigor visual',
-    location: 'Lote 3 — Sector norte',
-    priority: 'high',
-    priorityLabel: 'Alta',
-    area: '0.8 ha',
+    id: "a1",
+    title: "Bajo vigor visual",
+    location: "Lote 3 · Sector norte",
+    level: "high",
+    levelLabel: "Prioridad",
+    area: "0.8 ha",
+    share: "4.3%",
     trees: 58,
-    status: 'Nueva anomalía',
-    issue: 'Menor vigor visual y copa irregular frente al patrón del lote.',
-    action: 'Revisar uniformidad de riego, condición de hojas, estado de copa y posible presencia de plagas.',
-    business: '4.3% del área evaluada requiere validación en esta zona.'
+    status: "Nueva",
+    summary: "La copa y coloración se ven menos uniformes que el patrón normal del lote.",
+    action: "Revisar uniformidad de riego, estado de hojas, copa y señales sanitarias.",
+    business: "Es la zona que más conviene visitar primero porque concentra más árboles marcados y explica gran parte del aumento frente al vuelo anterior.",
+    lot: "lot3"
   },
   {
-    id: 'a2',
-    title: 'Variación de coloración',
-    location: 'Lote 5 — Borde este',
-    priority: 'medium',
-    priorityLabel: 'Media',
-    area: '0.5 ha',
-    trees: 34,
-    status: 'Nueva anomalía',
-    issue: 'Coloración distinta frente a árboles cercanos.',
-    action: 'Realizar inspección visual y comparar con registros recientes de riego.',
-    business: 'Zona de borde que podría requerir manejo puntual.'
-  },
-  {
-    id: 'a3',
-    title: 'Menor cobertura de copa',
-    location: 'Lote 2 — Zona central',
-    priority: 'medium',
-    priorityLabel: 'Media',
-    area: '0.4 ha',
-    trees: 21,
-    status: 'Recurrente',
-    issue: 'La copa se ve menos densa que árboles cercanos.',
-    action: 'Revisar nutrición, estrés hídrico y manejo de poda.',
-    business: 'Alerta recurrente que conviene cruzar con rendimiento y calidad por lote.'
-  },
-  {
-    id: 'a4',
-    title: 'Patrón irregular de copa',
-    location: 'Lote 3 — Lado oeste',
-    priority: 'high',
-    priorityLabel: 'Alta',
-    area: '0.3 ha',
+    id: "a4",
+    title: "Patrón irregular de copa",
+    location: "Lote 3 · Lado oeste",
+    level: "high",
+    levelLabel: "Prioridad",
+    area: "0.3 ha",
+    share: "1.6%",
     trees: 13,
-    status: 'Nueva anomalía',
-    issue: 'Patrón de copa irregular comparado contra la línea base del lote.',
-    action: 'Validar en campo y revisar riego, poda y sanidad vegetal.',
-    business: 'Refuerza la prioridad operativa del Lote 3.'
+    status: "Nueva",
+    summary: "Diferencia visible en densidad y forma de copa frente a árboles cercanos.",
+    action: "Validar riego localizado, poda reciente y condición sanitaria del sector.",
+    business: "Refuerza que el Lote 3 debe ser la primera visita del equipo de campo.",
+    lot: "lot3"
+  },
+  {
+    id: "a2",
+    title: "Variación de coloración",
+    location: "Lote 5 · Borde este",
+    level: "medium",
+    levelLabel: "Revisar",
+    area: "0.5 ha",
+    share: "2.7%",
+    trees: 34,
+    status: "Nueva",
+    summary: "El borde este se ve distinto al resto del lote y podría estar respondiendo diferente al manejo.",
+    action: "Inspección visual y revisión de registros recientes de riego y fertirriego.",
+    business: "Puede indicar un problema de borde o distribución que conviene revisar antes de que crezca.",
+    lot: "lot5"
+  },
+  {
+    id: "a3",
+    title: "Menor cobertura de copa",
+    location: "Lote 2 · Zona central",
+    level: "medium",
+    levelLabel: "Revisar",
+    area: "0.4 ha",
+    share: "2.2%",
+    trees: 21,
+    status: "Recurrente",
+    summary: "La copa se ve menos densa que árboles cercanos y ya apareció en el vuelo anterior.",
+    action: "Revisar nutrición, estrés hídrico, poda y condición de raíces.",
+    business: "Al ser recurrente, debe cruzarse luego con rendimiento, calibre o packout del lote.",
+    lot: "lot2"
   }
 ];
 
 const lots = [
-  { lot: 'Lote 1', area: '4.2 ha', risk: 'Bajo', riskClass: 'low', highArea: '0.0 ha', trees: 8, trend: 'Estable', rec: 'Continuar monitoreo' },
-  { lot: 'Lote 2', area: '3.8 ha', risk: 'Medio', riskClass: 'medium', highArea: '0.4 ha', trees: 21, trend: 'Estable', rec: 'Inspeccionar zona central' },
-  { lot: 'Lote 3', area: '5.1 ha', risk: 'Alto', riskClass: 'high', highArea: '1.1 ha', trees: 71, trend: 'Empeoró', rec: 'Priorizar inspección' },
-  { lot: 'Lote 4', area: '2.7 ha', risk: 'Bajo', riskClass: 'low', highArea: '0.0 ha', trees: 5, trend: 'Estable', rec: 'Sin acción urgente' },
-  { lot: 'Lote 5', area: '2.6 ha', risk: 'Medio', riskClass: 'medium', highArea: '0.5 ha', trees: 34, trend: 'Empeoró', rec: 'Revisar borde este' }
+  { name: "Lote 1", area: "4.2 ha", level: "low", priority: "Baja", validate: "0.0 ha", trees: 8, trend: "Estable", action: "Continuar monitoreo" },
+  { name: "Lote 2", area: "3.8 ha", level: "medium", priority: "Media", validate: "0.4 ha", trees: 21, trend: "Estable", action: "Inspeccionar zona central" },
+  { name: "Lote 3", area: "5.1 ha", level: "high", priority: "Alta", validate: "1.1 ha", trees: 71, trend: "Empeoró", action: "Priorizar visita" },
+  { name: "Lote 4", area: "2.7 ha", level: "low", priority: "Baja", validate: "0.0 ha", trees: 5, trend: "Estable", action: "Sin acción urgente" },
+  { name: "Lote 5", area: "2.6 ha", level: "medium", priority: "Media", validate: "0.5 ha", trees: 34, trend: "Empeoró", action: "Revisar borde este" }
 ];
 
 const tasks = [
-  { id: 't1', title: 'Inspeccionar Lote 3 sector norte', alert: 'Bajo vigor visual', lot: 'Lote 3', priority: 'Alta', assigned: 'Jefe de campo', due: '24 mayo 2026', done: false },
-  { id: 't2', title: 'Revisar registros de riego en Lote 5', alert: 'Variación de coloración', lot: 'Lote 5', priority: 'Media', assigned: 'Agrónomo', due: '25 mayo 2026', done: false },
-  { id: 't3', title: 'Validar menor cobertura de copa', alert: 'Menor cobertura de copa', lot: 'Lote 2', priority: 'Media', assigned: 'Técnico de campo', due: '25 mayo 2026', done: false },
-  { id: 't4', title: 'Revisar patrón irregular en Lote 3 oeste', alert: 'Patrón irregular de copa', lot: 'Lote 3', priority: 'Alta', assigned: 'Jefe de campo', due: '24 mayo 2026', done: false }
+  { id: "t1", title: "Visitar Lote 3 sector norte", alert: "Bajo vigor visual", lot: "Lote 3", priority: "Alta", owner: "Jefe de campo", due: "24 mayo", done: false },
+  { id: "t2", title: "Revisar riego del Lote 5", alert: "Variación de coloración", lot: "Lote 5", priority: "Media", owner: "Agrónomo", due: "25 mayo", done: false },
+  { id: "t3", title: "Validar cobertura en Lote 2", alert: "Menor cobertura de copa", lot: "Lote 2", priority: "Media", owner: "Técnico", due: "25 mayo", done: false },
+  { id: "t4", title: "Revisar Lote 3 lado oeste", alert: "Patrón irregular de copa", lot: "Lote 3", priority: "Alta", owner: "Jefe de campo", due: "24 mayo", done: false }
 ];
 
-const layerNotes = {
-  vigor: 'Capa activa: Vigor visual. Muestra anomalías comparadas contra el patrón del lote.',
-  trees: 'Capa activa: Árboles. Resalta puntos donde se detectaron anomalías visuales.',
-  canopy: 'Capa activa: Cobertura de copa. Útil para comparar densidad visual entre lotes.',
-  change: 'Capa activa: Cambio vs vuelo anterior. Resalta zonas nuevas o que empeoraron.',
-  tasks: 'Capa activa: Tareas. Útil para validar qué alertas siguen pendientes en campo.'
+const layerCopy = {
+  vigor: "Capa activa: vigor visual. Muestra zonas que se ven distintas frente al patrón esperado del lote.",
+  arboles: "Capa activa: árboles. Resalta puntos que conviene visitar durante la inspección.",
+  copa: "Capa activa: cobertura de copa. Ayuda a comparar densidad y uniformidad entre sectores.",
+  cambios: "Capa activa: cambios. Diferencia alertas nuevas de alertas recurrentes.",
+  tareas: "Capa activa: tareas. Muestra zonas ya asignadas al equipo de campo."
 };
 
-let reviewedAlerts = 0;
-let activeAlert = 'a1';
+let activeAlertId = "a1";
+const reviewedAlerts = new Set();
 
-function badgeClass(priority) {
-  if (priority === 'high') return 'high';
-  if (priority === 'medium') return 'medium';
-  return 'low';
+function badgeClass(level) {
+  if (level === "high") return "high";
+  if (level === "medium") return "medium";
+  return "low";
 }
 
-function renderAlerts(filter = 'all') {
-  const container = document.getElementById('alertsList');
-  const filtered = alerts.filter(alert => filter === 'all' || alert.priority === filter);
-  container.innerHTML = filtered.map(alert => `
-    <article class="alert-card ${activeAlert === alert.id ? 'active' : ''}" data-alert-card="${alert.id}" data-priority="${alert.priority}">
-      <div class="alert-top">
+function renderRouteList() {
+  const routeList = document.getElementById("routeList");
+  routeList.innerHTML = alerts.map((alert, index) => `
+    <article class="route-item ${alert.id === activeAlertId ? "active" : ""}" data-route-alert="${alert.id}" tabindex="0">
+      <div class="route-item-head">
+        <h3>${index + 1}. ${alert.location}</h3>
+        <span class="badge ${badgeClass(alert.level)}">${alert.levelLabel}</span>
+      </div>
+      <p>${alert.area} · ${alert.trees} árboles · ${alert.title}</p>
+    </article>
+  `).join("");
+}
+
+function renderAlerts(filter = "all") {
+  const alertList = document.getElementById("alertList");
+  const filtered = alerts.filter(alert => filter === "all" || alert.level === filter);
+
+  alertList.innerHTML = filtered.map(alert => `
+    <article class="alert-card ${alert.id === activeAlertId ? "active" : ""}" data-alert-card="${alert.id}">
+      <div class="alert-head">
         <div>
           <h3>${alert.title}</h3>
-          <div class="alert-location">${alert.location}</div>
+          <div class="muted">${alert.location}</div>
         </div>
-        <span class="badge ${badgeClass(alert.priority)}">${alert.priorityLabel}</span>
+        <span class="badge ${badgeClass(alert.level)}">${alert.levelLabel}</span>
       </div>
+
       <div class="alert-metrics">
-        <div><strong>${alert.area}</strong><span>Área afectada</span></div>
-        <div><strong>${alert.trees}</strong><span>Árboles estimados</span></div>
+        <div><strong>${alert.area}</strong><span>Área</span></div>
+        <div><strong>${alert.trees}</strong><span>Árboles</span></div>
+        <div><strong>${alert.status}</strong><span>Historial</span></div>
       </div>
-      <p><strong>${alert.status}.</strong> ${alert.issue}</p>
+
+      <p>${alert.summary}</p>
+      <p><strong>Qué validar:</strong> ${alert.action}</p>
+
       <div class="card-actions">
-        <button class="btn btn-secondary" data-view-alert="${alert.id}">Ver detalle</button>
-        <button class="btn btn-ghost" data-task-alert="${alert.id}">Crear tarea</button>
-        <button class="btn btn-ghost" data-review-alert="${alert.id}">Marcar revisada</button>
+        <button class="button primary" type="button" data-open-alert="${alert.id}">Detalle</button>
+        <button class="button secondary" type="button" data-focus-alert="${alert.id}">Ver mapa</button>
+        <button class="button ghost" type="button" data-review-alert="${alert.id}">${reviewedAlerts.has(alert.id) ? "Revisada" : "Marcar revisada"}</button>
       </div>
     </article>
-  `).join('');
+  `).join("");
 }
 
 function renderLots() {
-  const cardContainer = document.getElementById('lotCards');
-  const tableBody = document.getElementById('lotTableBody');
-  cardContainer.innerHTML = lots.map(item => `
+  const lotGrid = document.getElementById("lotGrid");
+  const lotTable = document.getElementById("lotTable");
+
+  lotGrid.innerHTML = lots.map(lot => `
     <article class="lot-card">
       <div class="lot-card-head">
-        <div><h3>${item.lot}</h3><span class="alert-location">${item.area}</span></div>
-        <span class="badge ${item.riskClass === 'high' ? 'high' : item.riskClass === 'medium' ? 'medium' : 'low'}">Riesgo ${item.risk}</span>
+        <div>
+          <h3>${lot.name}</h3>
+          <div class="muted">${lot.area}</div>
+        </div>
+        <span class="badge ${badgeClass(lot.level)}">${lot.priority}</span>
       </div>
       <div class="lot-stats">
-        <div><strong>${item.highArea}</strong><span>Alerta alta</span></div>
-        <div><strong>${item.trees}</strong><span>Árboles</span></div>
-        <div><strong>${item.trend}</strong><span>Tendencia</span></div>
+        <div><strong>${lot.validate}</strong><span>Validar</span></div>
+        <div><strong>${lot.trees}</strong><span>Árboles</span></div>
+        <div><strong>${lot.trend}</strong><span>Tendencia</span></div>
       </div>
-      <p class="alert-location" style="margin:12px 0 0">${item.rec}</p>
+      <p class="muted">${lot.action}</p>
     </article>
-  `).join('');
+  `).join("");
 
-  tableBody.innerHTML = lots.map(item => `
+  lotTable.innerHTML = lots.map(lot => `
     <tr>
-      <td><strong>${item.lot}</strong></td>
-      <td>${item.area}</td>
-      <td><span class="badge ${item.riskClass === 'high' ? 'high' : item.riskClass === 'medium' ? 'medium' : 'low'}">${item.risk}</span></td>
-      <td>${item.highArea}</td>
-      <td>${item.trees}</td>
-      <td>${item.trend}</td>
-      <td>${item.rec}</td>
+      <td><strong>${lot.name}</strong></td>
+      <td>${lot.area}</td>
+      <td><span class="badge ${badgeClass(lot.level)}">${lot.priority}</span></td>
+      <td>${lot.validate}</td>
+      <td>${lot.trees}</td>
+      <td>${lot.trend}</td>
+      <td>${lot.action}</td>
     </tr>
-  `).join('');
+  `).join("");
 }
 
 function renderTasks() {
-  const container = document.getElementById('taskList');
-  container.innerHTML = tasks.map(task => `
-    <article class="task-item ${task.done ? 'complete' : ''}">
+  const taskList = document.getElementById("taskList");
+  taskList.innerHTML = tasks.map(task => `
+    <article class="task-item ${task.done ? "done" : ""}">
       <div class="task-main">
         <strong>${task.title}</strong>
-        <span>Alerta vinculada: ${task.alert}</span>
+        <span>${task.alert} · ${task.lot}</span>
       </div>
-      <button class="btn ${task.done ? 'btn-secondary' : 'btn-primary'}" data-toggle-task="${task.id}">${task.done ? 'Completada' : 'Cerrar tarea'}</button>
+      <button class="button ${task.done ? "secondary" : "primary"}" type="button" data-task="${task.id}">${task.done ? "Reabrir" : "Cerrar tarea"}</button>
       <div class="task-meta">
-        <span>${task.lot}</span>
         <span>Prioridad ${task.priority}</span>
-        <span>Asignado a: ${task.assigned}</span>
+        <span>${task.owner}</span>
         <span>Vence: ${task.due}</span>
       </div>
     </article>
-  `).join('');
+  `).join("");
 
-  const open = tasks.filter(task => !task.done).length;
-  document.getElementById('openTaskCount').textContent = open;
-  document.getElementById('reviewedCount').textContent = reviewedAlerts;
+  const closed = tasks.filter(task => task.done).length;
+  const open = tasks.length - closed;
+  document.getElementById("closedTasks").textContent = `${closed}/${tasks.length}`;
+  document.getElementById("openTasksTop").textContent = open;
 }
 
 function setActiveAlert(alertId) {
-  activeAlert = alertId;
-  document.querySelectorAll('.alert-card').forEach(card => card.classList.toggle('active', card.dataset.alertCard === alertId));
-  document.querySelectorAll('.alert-zone').forEach(zone => zone.style.opacity = zone.dataset.alert === alertId ? '1' : '0.42');
-  document.querySelectorAll('.lot').forEach(lot => lot.classList.remove('selected'));
-  const selectedLot = alertId === 'a2' ? 'lot5' : alertId === 'a3' ? 'lot2' : 'lot3';
-  document.getElementById(selectedLot)?.classList.add('selected');
-}
-
-function openAlertModal(alertId) {
+  activeAlertId = alertId;
   const alert = alerts.find(item => item.id === alertId);
-  if (!alert) return;
-  const modal = document.getElementById('alertModal');
-  const content = document.getElementById('modalContent');
-  content.innerHTML = `
-    <p class="eyebrow">Detalle de alerta</p>
-    <h2 id="modalTitle" class="modal-title">${alert.title} — ${alert.location}</h2>
-    <span class="badge ${badgeClass(alert.priority)}">Prioridad ${alert.priorityLabel}</span>
-    <div class="modal-grid">
-      <div class="modal-metric"><strong>${alert.area}</strong><span>Área afectada</span></div>
-      <div class="modal-metric"><strong>${alert.trees}</strong><span>Árboles estimados</span></div>
-      <div class="modal-metric"><strong>Media-alta</strong><span>Confianza visual</span></div>
-      <div class="modal-metric"><strong>${alert.status}</strong><span>Comparación histórica</span></div>
-    </div>
-    <h3>Impacto para el fundo</h3>
-    <p>${alert.business}</p>
-    <h3>Evidencia visual</h3>
-    <div class="evidence-grid">
-      <div class="evidence-box">Imagen aérea del sector</div>
-      <div class="evidence-box">Zoom de copa</div>
-      <div class="evidence-box">Comparación saludable</div>
-      <div class="evidence-box">Vuelo anterior</div>
-    </div>
-    <h3>Interpretación</h3>
-    <p>Esta zona presenta menor uniformidad visual frente al resto del lote. La diferencia puede estar asociada a estrés hídrico, nutrición, presión sanitaria, poda o variabilidad del suelo. AgroLens recomienda validar el hallazgo en campo antes de tomar decisiones agronómicas.</p>
-    <h3>Checklist sugerido</h3>
-    <ul class="checklist">
-      <li>Revisar presión y uniformidad de riego.</li>
-      <li>Inspeccionar hojas, copa y condición general del árbol.</li>
-      <li>Buscar señales de plagas o enfermedades.</li>
-      <li>Comparar con fertirriego, riego y labores recientes.</li>
-      <li>Subir foto de campo después de la inspección.</li>
-    </ul>
-    <div class="card-actions">
-      <button class="btn btn-primary" data-task-alert="${alert.id}">Crear tarea</button>
-      <button class="btn btn-secondary" data-review-alert="${alert.id}">Marcar revisada</button>
-      <button class="btn btn-ghost" id="fieldNoteBtn">Agregar nota</button>
-      <button class="btn btn-ghost" id="falsePositiveBtn">Falso positivo</button>
-    </div>
-  `;
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden', 'false');
-}
 
-function closeModal() {
-  const modal = document.getElementById('alertModal');
-  modal.classList.remove('open');
-  modal.setAttribute('aria-hidden', 'true');
-}
+  document.querySelectorAll("[data-alert-zone]").forEach(zone => {
+    const isActive = zone.dataset.alertZone === alertId;
+    zone.classList.toggle("active-zone", isActive);
+    zone.style.opacity = isActive ? "1" : ".42";
+  });
 
-function showToast(message) {
-  const toast = document.getElementById('toast');
-  toast.textContent = message;
-  toast.classList.add('show');
-  window.clearTimeout(showToast.timer);
-  showToast.timer = window.setTimeout(() => toast.classList.remove('show'), 2600);
-}
+  document.querySelectorAll(".lot").forEach(lot => lot.classList.remove("selected"));
+  if (alert?.lot) document.getElementById(alert.lot)?.classList.add("selected");
 
-function updateNav(sectionId) {
-  document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
-    link.classList.toggle('active', link.dataset.section === sectionId);
+  document.querySelectorAll("[data-route-alert]").forEach(card => {
+    card.classList.toggle("active", card.dataset.routeAlert === alertId);
+  });
+  document.querySelectorAll("[data-alert-card]").forEach(card => {
+    card.classList.toggle("active", card.dataset.alertCard === alertId);
   });
 }
 
-function initNavObserver() {
-  const sections = ['summary', 'map', 'alerts', 'lots', 'tasks', 'history', 'report']
-    .map(id => document.getElementById(id))
-    .filter(Boolean);
+function openModal(alertId) {
+  const alert = alerts.find(item => item.id === alertId);
+  if (!alert) return;
+  setActiveAlert(alertId);
 
+  const modal = document.getElementById("alertModal");
+  const content = document.getElementById("modalContent");
+
+  content.innerHTML = `
+    <span class="overline">Detalle de alerta</span>
+    <h2 class="modal-title" id="modalTitle">${alert.title} · ${alert.location}</h2>
+    <span class="badge ${badgeClass(alert.level)}">${alert.levelLabel}</span>
+
+    <div class="modal-metrics">
+      <div><strong>${alert.area}</strong><span>Área</span></div>
+      <div><strong>${alert.trees}</strong><span>Árboles</span></div>
+      <div><strong>${alert.share}</strong><span>Área evaluada</span></div>
+      <div><strong>${alert.status}</strong><span>Historial</span></div>
+    </div>
+
+    <h3>Lectura para el fundo</h3>
+    <p class="muted">${alert.business}</p>
+
+    <h3>Evidencia visual</h3>
+    <div class="evidence-grid">
+      <div class="evidence">Imagen aérea del sector</div>
+      <div class="evidence">Zoom de copa</div>
+      <div class="evidence">Comparación con zona sana</div>
+      <div class="evidence">Comparación con vuelo anterior</div>
+    </div>
+
+    <h3>Qué validar en campo</h3>
+    <p class="muted">${alert.action}</p>
+    <ul class="checklist">
+      <li>Revisar presión y uniformidad de riego.</li>
+      <li>Inspeccionar hojas, copa y condición general de los árboles marcados.</li>
+      <li>Buscar señales visibles de plagas, enfermedad o estrés.</li>
+      <li>Comparar con fertirriego, riego y labores recientes.</li>
+      <li>Subir foto de campo y comentario después de la visita.</li>
+    </ul>
+
+    <div class="card-actions">
+      <button class="button primary" type="button" data-create-task="${alert.id}">Crear tarea</button>
+      <button class="button secondary" type="button" data-review-alert="${alert.id}">${reviewedAlerts.has(alert.id) ? "Revisada" : "Marcar revisada"}</button>
+      <button class="button ghost" type="button" data-note="${alert.id}">Agregar nota</button>
+      <button class="button soft-red" type="button" data-false-positive="${alert.id}">Falso positivo</button>
+    </div>
+  `;
+
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+}
+
+function closeModal() {
+  const modal = document.getElementById("alertModal");
+  modal.classList.remove("open");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  window.clearTimeout(showToast.timer);
+  showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 2400);
+}
+
+function updateReviewed() {
+  const activeFilter = document.querySelector(".filter.active")?.dataset.filter || "all";
+  renderAlerts(activeFilter);
+  setActiveAlert(activeAlertId);
+}
+
+function updateNav(sectionId) {
+  document.querySelectorAll("[data-nav]").forEach(item => {
+    item.classList.toggle("active", item.dataset.nav === sectionId);
+  });
+}
+
+function bindEvents() {
+  document.addEventListener("click", event => {
+    const route = event.target.closest("[data-route-alert]");
+    const open = event.target.closest("[data-open-alert]");
+    const focus = event.target.closest("[data-focus-alert]");
+    const zone = event.target.closest("[data-alert-zone]");
+    const layer = event.target.closest("[data-layer]");
+    const filter = event.target.closest("[data-filter]");
+    const review = event.target.closest("[data-review-alert]");
+    const task = event.target.closest("[data-task]");
+    const close = event.target.closest("[data-close-modal]");
+    const createTask = event.target.closest("[data-create-task]");
+    const note = event.target.closest("[data-note]");
+    const falsePositive = event.target.closest("[data-false-positive]");
+
+    if (route) setActiveAlert(route.dataset.routeAlert);
+    if (open) openModal(open.dataset.openAlert);
+    if (focus) {
+      setActiveAlert(focus.dataset.focusAlert);
+      document.getElementById("mapa")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    if (zone?.dataset.alertZone) openModal(zone.dataset.alertZone);
+    if (layer) {
+      document.querySelectorAll(".layer-pill").forEach(button => button.classList.remove("active"));
+      layer.classList.add("active");
+      document.getElementById("mapNote").textContent = layerCopy[layer.dataset.layer] || layerCopy.vigor;
+    }
+    if (filter) {
+      document.querySelectorAll(".filter").forEach(button => button.classList.remove("active"));
+      filter.classList.add("active");
+      renderAlerts(filter.dataset.filter);
+      setActiveAlert(activeAlertId);
+    }
+    if (review) {
+      reviewedAlerts.add(review.dataset.reviewAlert);
+      updateReviewed();
+      showToast("Alerta marcada como revisada.");
+    }
+    if (task) {
+      const item = tasks.find(t => t.id === task.dataset.task);
+      if (item) {
+        item.done = !item.done;
+        renderTasks();
+        showToast(item.done ? "Tarea cerrada." : "Tarea reabierta.");
+      }
+    }
+    if (close) closeModal();
+    if (createTask) showToast("Tarea creada para el equipo de campo.");
+    if (note) showToast("Nota agregada al reporte.");
+    if (falsePositive) showToast("Marcado como falso positivo para revisión del modelo.");
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") closeModal();
+    if ((event.key === "Enter" || event.key === " ") && event.target.matches("[data-route-alert]")) {
+      event.preventDefault();
+      setActiveAlert(event.target.dataset.routeAlert);
+    }
+  });
+
+  document.getElementById("printButton")?.addEventListener("click", () => window.print());
+  document.getElementById("printButton2")?.addEventListener("click", () => window.print());
+
+  document.getElementById("shareButton")?.addEventListener("click", async () => {
+    const data = { title: "Reporte AgroLens", text: "Reporte de vuelo del Fundo Santa Rosa", url: window.location.href };
+    try {
+      if (navigator.share) await navigator.share(data);
+      else {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast("Link copiado al portapapeles.");
+      }
+    } catch {
+      showToast("No se pudo compartir. Puedes copiar el link del navegador.");
+    }
+  });
+
+  const sections = [...document.querySelectorAll("main section[id]")];
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) updateNav(entry.target.id);
     });
-  }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
-
+  }, { threshold: .2, rootMargin: "-18% 0px -65% 0px" });
   sections.forEach(section => observer.observe(section));
 }
 
-function wireEvents() {
-  document.addEventListener('click', event => {
-    const alertCard = event.target.closest('[data-alert-card]');
-    if (alertCard && !event.target.closest('button')) {
-      const alertId = alertCard.dataset.alertCard;
-      setActiveAlert(alertId);
-      openAlertModal(alertId);
-    }
-
-    const viewBtn = event.target.closest('[data-view-alert]');
-    if (viewBtn) {
-      setActiveAlert(viewBtn.dataset.viewAlert);
-      openAlertModal(viewBtn.dataset.viewAlert);
-    }
-
-    const taskBtn = event.target.closest('[data-task-alert]');
-    if (taskBtn) {
-      const alert = alerts.find(item => item.id === taskBtn.dataset.taskAlert);
-      showToast(`Tarea creada para: ${alert?.title || 'alerta'}`);
-    }
-
-    const reviewBtn = event.target.closest('[data-review-alert]');
-    if (reviewBtn) {
-      reviewedAlerts = Math.min(4, reviewedAlerts + 1);
-      renderTasks();
-      showToast('Alerta marcada como revisada.');
-    }
-
-    const taskToggle = event.target.closest('[data-toggle-task]');
-    if (taskToggle) {
-      const task = tasks.find(item => item.id === taskToggle.dataset.toggleTask);
-      if (task) task.done = !task.done;
-      renderTasks();
-      showToast(task?.done ? 'Tarea cerrada.' : 'Tarea reabierta.');
-    }
-
-    if (event.target.closest('[data-close-modal]')) closeModal();
-
-    if (event.target.id === 'fieldNoteBtn') showToast('Nota de campo agregada al prototipo.');
-    if (event.target.id === 'falsePositiveBtn') showToast('Marcado como falso positivo para reentrenamiento.');
-  });
-
-  document.querySelectorAll('.filter-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-      renderAlerts(button.dataset.filter);
-      setActiveAlert(activeAlert);
-    });
-  });
-
-  document.querySelectorAll('.layer-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      document.querySelectorAll('.layer-btn').forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-      const layer = button.dataset.layer;
-      document.querySelector('.farm-map').dataset.layer = layer;
-      document.getElementById('layerNote').textContent = layerNotes[layer];
-    });
-  });
-
-  document.querySelectorAll('.alert-zone').forEach(zone => {
-    zone.addEventListener('click', () => {
-      setActiveAlert(zone.dataset.alert);
-      openAlertModal(zone.dataset.alert);
-    });
-  });
-
-  document.getElementById('downloadBtn').addEventListener('click', () => window.print());
-  document.getElementById('printReportBtn').addEventListener('click', () => window.print());
-  document.getElementById('shareBtn').addEventListener('click', async () => {
-    const shareData = {
-      title: 'Reporte AgroLens — Fundo Santa Rosa',
-      text: 'AgroLens identificó 1.6 ha que deberían revisarse primero en el Lote 3.',
-      url: window.location.href
-    };
-    if (navigator.share) {
-      try { await navigator.share(shareData); } catch (error) { /* user cancelled */ }
-    } else {
-      await navigator.clipboard?.writeText(window.location.href);
-      showToast('Link copiado al portapapeles.');
-    }
-  });
+function init() {
+  renderRouteList();
+  renderAlerts();
+  renderLots();
+  renderTasks();
+  setActiveAlert(activeAlertId);
+  bindEvents();
 }
 
-renderAlerts();
-renderLots();
-renderTasks();
-wireEvents();
-initNavObserver();
-setActiveAlert('a1');
+init();
