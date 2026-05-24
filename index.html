@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AgroLens · Reporte de vuelo</title>
+  <meta name="description" content="Dashboard AgroLens para resultados de vuelo en fundo de palta Hass." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegación principal">
+      <div class="brand desktop-brand">
+        <div class="brand-mark">AL</div>
+        <div>
+          <strong>AgroLens</strong>
+          <span>Flight intelligence</span>
+        </div>
+      </div>
+      <nav class="side-nav">
+        <a href="#summary" class="nav-link active" data-section="summary">Resumen</a>
+        <a href="#map" class="nav-link" data-section="map">Mapa</a>
+        <a href="#alerts" class="nav-link" data-section="alerts">Alertas</a>
+        <a href="#lots" class="nav-link" data-section="lots">Lotes</a>
+        <a href="#tasks" class="nav-link" data-section="tasks">Tareas</a>
+        <a href="#history" class="nav-link" data-section="history">Historial</a>
+        <a href="#report" class="nav-link" data-section="report">PDF</a>
+      </nav>
+      <div class="sidebar-note">
+        <span class="status-dot"></span>
+        Análisis RGB + IA visual. Validar en campo antes de decidir.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="brand mobile-brand">
+          <div class="brand-mark">AL</div>
+          <div>
+            <strong>AgroLens</strong>
+            <span>Reporte de vuelo</span>
+          </div>
+        </div>
+        <div class="report-meta">
+          <span>Fundo Santa Rosa</span>
+          <span>Palta Hass</span>
+          <span>23 mayo 2026</span>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-ghost" id="shareBtn">Compartir</button>
+          <button class="btn btn-primary" id="downloadBtn">Descargar PDF</button>
+        </div>
+      </header>
+
+      <section class="hero section-block" id="summary">
+        <div class="hero-copy">
+          <p class="eyebrow">18.4 ha evaluadas · DJI Mini 4 Pro · RGB + IA visual</p>
+          <h1>1.6 ha deberían revisarse primero.</h1>
+          <p class="hero-text">AgroLens identificó zonas con anomalías visuales en palta Hass. La mayor concentración está en el <strong>Lote 3</strong>, especialmente en el sector norte.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#alerts">Revisar alertas prioritarias</a>
+            <a class="btn btn-secondary" href="#map">Ver mapa del fundo</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="mini-map-preview" aria-hidden="true">
+            <span class="preview-lot lot-a"></span>
+            <span class="preview-lot lot-b alert-medium"></span>
+            <span class="preview-lot lot-c alert-high"></span>
+            <span class="preview-lot lot-d"></span>
+            <span class="preview-lot lot-e alert-medium"></span>
+          </div>
+          <div>
+            <strong>Lote prioritario: Lote 3</strong>
+            <span>71 árboles marcados para inspección en este lote.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid section-block" aria-label="Indicadores principales">
+        <article class="kpi-card priority">
+          <span>Área a revisar primero</span>
+          <strong>1.6 ha</strong>
+          <small>Zona prioritaria para validación en campo</small>
+        </article>
+        <article class="kpi-card">
+          <span>Área evaluada en validación</span>
+          <strong>8.7%</strong>
+          <small>1.6 ha de 18.4 ha evaluadas</small>
+        </article>
+        <article class="kpi-card">
+          <span>Árboles a inspeccionar</span>
+          <strong>126</strong>
+          <small>Con anomalías visuales detectadas</small>
+        </article>
+        <article class="kpi-card">
+          <span>Lote prioritario</span>
+          <strong>Lote 3</strong>
+          <small>Mayor concentración de alertas</small>
+        </article>
+        <article class="kpi-card">
+          <span>Alertas nuevas</span>
+          <strong>3</strong>
+          <small>Detectadas por primera vez</small>
+        </article>
+        <article class="kpi-card">
+          <span>Alertas recurrentes</span>
+          <strong>1</strong>
+          <small>Ya presentes en el vuelo anterior</small>
+        </article>
+        <article class="kpi-card">
+          <span>Cambio vs último vuelo</span>
+          <strong>+0.6 ha</strong>
+          <small>Aumento en área prioritaria</small>
+        </article>
+        <article class="kpi-card">
+          <span>Tareas abiertas</span>
+          <strong id="openTaskCount">4</strong>
+          <small>Pendientes de validación</small>
+        </article>
+      </section>
+
+      <section class="impact section-block">
+        <div>
+          <p class="eyebrow">Impacto operativo</p>
+          <h2>El equipo no tiene que revisar todo el campo a ciegas.</h2>
+          <p>En vez de recorrer las 18.4 ha completas, puede empezar por el 8.7% del fundo que muestra mayor riesgo visual.</p>
+        </div>
+        <div class="impact-metrics">
+          <div><strong>2–3 h</strong><span>Trabajo estimado de inspección</span></div>
+          <div><strong>4</strong><span>Alertas por validar</span></div>
+          <div><strong>0/4</strong><span>Alertas revisadas</span></div>
+        </div>
+      </section>
+
+      <section class="dashboard-grid section-block" id="map">
+        <div class="panel map-panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Mapa del fundo</p>
+              <h2>Zonas de inspección</h2>
+            </div>
+            <div class="legend">
+              <span><i class="legend-dot green"></i>Normal</span>
+              <span><i class="legend-dot yellow"></i>Media</span>
+              <span><i class="legend-dot red"></i>Alta</span>
+            </div>
+          </div>
+
+          <div class="layer-tabs" role="tablist" aria-label="Capas del mapa">
+            <button class="layer-btn active" data-layer="vigor">Vigor visual</button>
+            <button class="layer-btn" data-layer="trees">Árboles</button>
+            <button class="layer-btn" data-layer="canopy">Cobertura</button>
+            <button class="layer-btn" data-layer="change">Cambio</button>
+            <button class="layer-btn" data-layer="tasks">Tareas</button>
+          </div>
+
+          <div class="farm-map" id="farmMap" aria-label="Mapa ilustrado del fundo">
+            <svg viewBox="0 0 760 470" role="img" aria-labelledby="mapTitle mapDesc">
+              <title id="mapTitle">Mapa AgroLens del Fundo Santa Rosa</title>
+              <desc id="mapDesc">Mapa ilustrado con lotes y zonas de alerta para inspección.</desc>
+              <defs>
+                <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#163b2a" flood-opacity="0.12"/>
+                </filter>
+              </defs>
+              <rect x="24" y="24" width="712" height="422" rx="34" fill="#edf6ef" stroke="#c4dccb" stroke-width="3"/>
+
+              <path id="lot1" class="lot normal" d="M62,68 L290,50 L300,203 L82,218 Z"/>
+              <path id="lot2" class="lot medium" d="M310,50 L540,65 L522,213 L306,203 Z"/>
+              <path id="lot3" class="lot high selected" d="M84,238 L305,222 L317,414 L66,395 Z"/>
+              <path id="lot4" class="lot normal" d="M330,230 L524,222 L553,405 L330,418 Z"/>
+              <path id="lot5" class="lot medium" d="M552,78 L698,104 L682,395 L570,405 L540,221 Z"/>
+
+              <g class="lot-labels">
+                <text x="165" y="139">Lote 1</text>
+                <text x="405" y="138">Lote 2</text>
+                <text x="171" y="318">Lote 3</text>
+                <text x="420" y="318">Lote 4</text>
+                <text x="612" y="243">Lote 5</text>
+              </g>
+
+              <g class="alert-zone high-zone" data-alert="a1">
+                <ellipse cx="173" cy="284" rx="72" ry="47"/>
+                <text x="122" y="286">Alta · 0.8 ha</text>
+              </g>
+              <g class="alert-zone high-zone smaller" data-alert="a4">
+                <ellipse cx="253" cy="360" rx="45" ry="34"/>
+                <text x="218" y="363">Alta</text>
+              </g>
+              <g class="alert-zone medium-zone" data-alert="a3">
+                <ellipse cx="402" cy="288" rx="52" ry="36"/>
+                <text x="366" y="291">Media</text>
+              </g>
+              <g class="alert-zone medium-zone" data-alert="a2">
+                <ellipse cx="627" cy="178" rx="44" ry="80" transform="rotate(-5 627 178)"/>
+                <text x="590" y="182">Media</text>
+              </g>
+
+              <g class="tree-markers">
+                <circle class="tree high-marker" cx="134" cy="262" r="6"/>
+                <circle class="tree high-marker" cx="165" cy="289" r="6"/>
+                <circle class="tree high-marker" cx="203" cy="304" r="6"/>
+                <circle class="tree high-marker" cx="244" cy="360" r="6"/>
+                <circle class="tree high-marker" cx="272" cy="371" r="6"/>
+                <circle class="tree medium-marker" cx="399" cy="287" r="5"/>
+                <circle class="tree medium-marker" cx="427" cy="301" r="5"/>
+                <circle class="tree medium-marker" cx="620" cy="142" r="5"/>
+                <circle class="tree medium-marker" cx="635" cy="191" r="5"/>
+                <circle class="tree normal-marker" cx="180" cy="126" r="4"/>
+                <circle class="tree normal-marker" cx="430" cy="122" r="4"/>
+                <circle class="tree normal-marker" cx="459" cy="350" r="4"/>
+              </g>
+            </svg>
+            <div class="map-layer-note" id="layerNote">Capa activa: Vigor visual. Muestra anomalías comparadas contra el patrón del lote.</div>
+          </div>
+        </div>
+
+        <aside class="panel alerts-sidebar" id="alerts">
+          <div class="panel-header stacked">
+            <p class="eyebrow">Alertas prioritarias</p>
+            <h2>Qué revisar primero</h2>
+          </div>
+          <div class="filter-row" aria-label="Filtro de alertas">
+            <button class="filter-btn active" data-filter="all">Todas</button>
+            <button class="filter-btn" data-filter="high">Alta</button>
+            <button class="filter-btn" data-filter="medium">Media</button>
+          </div>
+          <div class="alerts-list" id="alertsList"></div>
+        </aside>
+      </section>
+
+      <section class="section-block" id="lots">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Estado por lote</p>
+            <h2>Comparación para priorizar manejo</h2>
+          </div>
+          <p>Lote 3 concentra la mayor parte del área prioritaria y debería inspeccionarse primero.</p>
+        </div>
+        <div class="lot-cards" id="lotCards"></div>
+        <div class="lot-table-wrap">
+          <table class="lot-table">
+            <thead>
+              <tr>
+                <th>Lote</th>
+                <th>Área</th>
+                <th>Riesgo</th>
+                <th>Área en alerta alta</th>
+                <th>Árboles</th>
+                <th>Tendencia</th>
+                <th>Recomendación</th>
+              </tr>
+            </thead>
+            <tbody id="lotTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section-block task-section" id="tasks">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Gestión de campo</p>
+            <h2>Tareas de inspección</h2>
+          </div>
+          <div class="progress-pill"><span id="reviewedCount">0</span> de 4 alertas revisadas</div>
+        </div>
+        <div class="task-list" id="taskList"></div>
+      </section>
+
+      <section class="section-block history" id="history">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Historial</p>
+            <h2>¿Mejoró o empeoró el campo?</h2>
+          </div>
+          <p>El área prioritaria subió de 1.0 ha a 1.6 ha. El aumento se concentra en el Lote 3.</p>
+        </div>
+        <div class="chart-grid">
+          <article class="chart-card">
+            <div class="chart-title"><strong>Área prioritaria por vuelo</strong><span>ha</span></div>
+            <div class="bar-chart" aria-label="Área prioritaria por vuelo">
+              <div style="--h:44%"><span>0.7</span><label>May 1</label></div>
+              <div style="--h:63%"><span>1.0</span><label>May 10</label></div>
+              <div style="--h:100%"><span>1.6</span><label>May 23</label></div>
+            </div>
+          </article>
+          <article class="chart-card">
+            <div class="chart-title"><strong>Árboles a inspeccionar</strong><span>#</span></div>
+            <div class="bar-chart" aria-label="Árboles a inspeccionar por vuelo">
+              <div style="--h:43%"><span>54</span><label>May 1</label></div>
+              <div style="--h:64%"><span>81</span><label>May 10</label></div>
+              <div style="--h:100%"><span>126</span><label>May 23</label></div>
+            </div>
+          </article>
+          <article class="chart-card insight-card">
+            <strong>Insight AgroLens</strong>
+            <p>Las alertas nuevas explican la mayor parte del aumento. Conviene validar Lote 3 antes de la próxima decisión de riego o sanidad.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block report-preview" id="report">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">PDF exportable</p>
+            <h2>Vista previa del reporte</h2>
+          </div>
+          <button class="btn btn-primary" id="printReportBtn">Imprimir / guardar PDF</button>
+        </div>
+        <div class="pdf-sheet">
+          <div class="pdf-cover">
+            <div class="brand-mark">AL</div>
+            <div>
+              <h3>Reporte de vuelo AgroLens</h3>
+              <p>Fundo Santa Rosa · Palta Hass · 23 mayo 2026</p>
+            </div>
+          </div>
+          <div class="pdf-section">
+            <h4>Resumen ejecutivo</h4>
+            <p>Se evaluaron 18.4 ha y se identificaron 1.6 ha para inspección prioritaria. La mayor concentración de alertas se ubica en Lote 3.</p>
+          </div>
+          <div class="pdf-section pdf-grid">
+            <div><strong>1.6 ha</strong><span>Área prioritaria</span></div>
+            <div><strong>126</strong><span>Árboles a inspeccionar</span></div>
+            <div><strong>+0.6 ha</strong><span>Cambio vs vuelo anterior</span></div>
+          </div>
+          <div class="pdf-section">
+            <h4>Nota técnica</h4>
+            <p>Este análisis se basa en imágenes RGB de dron y detección visual asistida por IA. Los resultados indican anomalías visuales y deben validarse en campo antes de tomar decisiones agronómicas definitivas.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Navegación móvil">
+    <a href="#summary" class="mobile-nav-link active" data-section="summary">Resumen</a>
+    <a href="#map" class="mobile-nav-link" data-section="map">Mapa</a>
+    <a href="#alerts" class="mobile-nav-link" data-section="alerts">Alertas</a>
+    <a href="#lots" class="mobile-nav-link" data-section="lots">Lotes</a>
+    <a href="#history" class="mobile-nav-link" data-section="history">Historial</a>
+  </nav>
+
+  <div class="modal" id="alertModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-panel">
+      <button class="modal-close" data-close-modal aria-label="Cerrar detalle">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
