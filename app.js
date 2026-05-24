@@ -242,10 +242,10 @@ function openModal(alertId) {
 
     <h3>Evidencia visual</h3>
     <div class="evidence-grid">
-      <figure class="evidence with-image"><img src="assets/overview-aerial.svg" alt="Vista general del fundo" /><figcaption>Vista general del fundo</figcaption></figure>
-      <figure class="evidence with-image"><img src="assets/anomaly-closeup.svg" alt="Zoom de la zona prioritaria" /><figcaption>Zoom de la zona prioritaria</figcaption></figure>
-      <figure class="evidence with-image"><img src="assets/healthy-compare.svg" alt="Comparación con una referencia sana" /><figcaption>Comparación con una referencia sana</figcaption></figure>
-      <figure class="evidence with-image"><img src="assets/field-inspection.svg" alt="Validación en campo" /><figcaption>Qué se valida en campo</figcaption></figure>
+      <figure class="evidence with-image"><img src="assets/saas-aerial-overview.png" alt="Vista general del fundo" /><figcaption>Vista general del fundo</figcaption></figure>
+      <figure class="evidence with-image"><img src="assets/saas-anomaly-zone.png" alt="Zoom de la zona prioritaria" /><figcaption>Zoom de la zona prioritaria</figcaption></figure>
+      <figure class="evidence with-image"><img src="assets/saas-healthy-vs-weak.png" alt="Comparación con una referencia sana" /><figcaption>Comparación con una referencia sana</figcaption></figure>
+      <figure class="evidence with-image"><img src="assets/saas-field-inspection.png" alt="Validación en campo" /><figcaption>Qué se valida en campo</figcaption></figure>
     </div>
 
     <h3>Qué validar en campo</h3>
